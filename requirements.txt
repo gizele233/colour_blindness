@@ -1,4 +1,5 @@
 imutils==0.5.4
 numpy==1.21.2
 cv2-tools==2.4.0
-opencv-python==4.5.4.60
+opencv-contrib-python==4.5.3.56
+opencv-python==4.5.3.56
