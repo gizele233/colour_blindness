@@ -1,6 +1,4 @@
 import streamlit as st
-import time
-import cv2
 import imutils
 import numpy
 from PIL import Image
