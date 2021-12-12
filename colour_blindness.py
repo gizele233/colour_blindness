@@ -1,25 +1,12 @@
 import streamlit as st
+import time
 import cv2
 import imutils
-# from daltonize import daltonize
 import numpy
 from PIL import Image
 
 
-# def redim(img, largura): #função para redimensionar uma imagem
-#     alt = int(img.shape[0]/img.shape[1]*largura)
-#     img = cv2.resize(img, (largura, alt), interpolation = cv2.INTER_AREA)
-
-#     return img
-
 def correcao(RGB, filtro):     
-    # if frame.mode in ['1', 'L']: # Don't process black/white or grayscale images
-    #     return 
-    # frame = frame.copy()
-    # im = frame.convert('RGB') 
-    # RGB = numpy.asarray(im, dtype=float) 
-    # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) *
-    # RGB = numpy.asarray(frame, dtype=float) *
 
     # Transformation matrix for Deuteranope (a form of red/green color deficit)
     lms2lmsd = numpy.array([[1,0,0],[0.494207,0,1.24827],[0,0,1]])
@@ -93,69 +80,29 @@ def correcao(RGB, filtro):
     return converted
 
 def show_image():
-    img_file_buffer = st.sidebar.file_uploader('Carregue uma imagem', type=['jpg','jpeg','png'])
+    st.sidebar.markdown('## Carregue uma imagem')
+    img_file_buffer = st.sidebar.file_uploader('Selecione uma imagem', type=['jpg','jpeg','png'])
     
-    im_original = Image.open(img_file_buffer)
-    im = im_original.copy()
-    im = im.convert('RGB') 
-    frame = numpy.asarray(im, dtype=float)
+    # filtro=1
 
-    # captura = cv2.VideoCapture(0)
-    # captura = cv2.VideoCapture('video2.mp4')
-
-    # frame = cv2.imread('folhas.png') *
-
-    # frame = Image.open("gizele.jpg")
     
-    # You may need to convert the color.
-    # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    # captura = Image.fromarray(frame)
 
-    filtro=1
 
-    st.sidebar.markdown('## Filtro para a tabela teste')
-    tipos = numpy.unique(['normal', 'deuteranopia', 'protanopia', 'tritanopia'])
-    filtro = st.sidebar.selectbox('Selecione a categoria para apresentar na tabela', options = tipos)
-
-    # while True:
-        # ret, frame = captura.read()
-    
     if img_file_buffer is not None:
-        st.write(filtro)
-        frame = imutils.resize(frame, width=700)
-        # cv2_im = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-        # frame = Image.fromarray(numpy.uint8(cv2_im))
+        im_original = Image.open(img_file_buffer)
+        im = im_original.copy()
+        im = im.convert('RGB') 
+        frame = numpy.asarray(im, dtype=float)
 
-#         frame = redim(frame, 320)
-        
-        # desenhando sobre a câmera
-        # fonte = cv2.FONT_HERSHEY_SIMPLEX
-        # cv2.putText(frame,'Menu',(13,65), fonte, 1,(210,105,30),2,cv2.LINE_AA)
-        # cv2.putText(frame,'1-Img Original',(13,100), fonte, 0.5,(210,105,30),1,cv2.LINE_AA)
-        # cv2.putText(frame,'2-Deuteranopia',(13,120), fonte, 0.5,(210,105,30),1,cv2.LINE_AA)
-        # cv2.putText(frame,'3-Protanotopia',(13,140), fonte, 0.5,(210,105,30),1,cv2.LINE_AA)
-        # cv2.putText(frame,'4-Tritanopia',(13,160), fonte, 0.5,(210,105,30),1,cv2.LINE_AA)
-        # cv2.putText(frame,'esc-sair',(13,180), fonte, 0.5,(210,105,30),1,cv2.LINE_AA)
-        
-        # if filtro == 1:
-        #     cv2.imshow('Estudo OpenCV- Filtro', frame)
-            
-        # if filtro == 2: 
-        #     deut = correcao(frame, 2)
-        #     cv2.imshow('Estudo OpenCV- Deuteranopia', deut)
-        
-        # if filtro == 3: 
-        #     prot = correcao(frame, 3)
-        #     cv2.imshow('Estudo OpenCV- Protanotopia', prot)
-        
-        # if filtro == 4: 
-        #     trit = correcao(frame, 4)
-        #     cv2.imshow('Estudo OpenCV- Tritanopia', trit)
-        
+        st.sidebar.markdown('## Escolha o tipo de daltonismo')
+        filtro = st.sidebar.selectbox('Selecione o tipo', ('normal', 'deuteranopia', 'protanopia', 'tritanopia'))
 
+        st.write('➜Tipo escolhido:', filtro)
+        frame = imutils.resize(frame, width=600)
+        
         if filtro == 'normal':
             # cv2.imshow('Estudo OpenCV', frame)
-            st.image(im_original, width=700)
+            st.image(im_original, width=600)
             
         if filtro == 'deuteranopia': 
             deut = correcao(frame, 2)
@@ -171,40 +118,27 @@ def show_image():
             trit = correcao(frame, 4)
             # cv2.imshow('Estudo OpenCV', trit)
             st.image(trit)
-
-        # key = cv2.waitKey(1) 
-        
-        # if the 'esc' key is pressed, stop the loop
-        # if key == 27:   
-        #     break
-        
-        # elif key == -1: 
-        #     continue
-        
-        # elif key == 49:
-        #     filtro= 1
-        
-        # elif key == 50:
-        #     filtro= 2
-            
-        # elif key == 51:
-        #     filtro= 3
-        #     st.sidebar.markdown
-        # elif key == 52:
-        #     filtro= 4 
     else:
-        st.title('Adicione uma imagem')
+        return 0
             
 
     # captura.release() #libera a captura
     # cv2.destroyAllWindows() #libera a memória
     
 def main():
-    st.title('Correção de imagens :sunglasses:')
-    st.write('Uso de processamento de imagem para correção de imagens para daltônicos')
+    st.title('Aplicação de processamento de imagens para daltônicos')
     show_image()
+    hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+    st.markdown(hide_st_style, unsafe_allow_html=True)
     return 0
  
 if __name__ == '__main__':
     main()
+
 
