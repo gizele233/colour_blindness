@@ -80,10 +80,6 @@ def correcao(RGB, filtro):
 def show_image():
     st.sidebar.markdown('## Carregue uma imagem')
     img_file_buffer = st.sidebar.file_uploader('Selecione uma imagem', type=['jpg','jpeg','png'])
-    
-    # filtro=1
-
-    
 
 
     if img_file_buffer is not None:
@@ -117,6 +113,8 @@ def show_image():
             # cv2.imshow('Estudo OpenCV', trit)
             st.image(trit)
     else:
+        img = Image.open('photocapa.jpg')
+        st.image(img)
         return 0
             
 
