@@ -78,9 +78,13 @@ def correcao(RGB, filtro):
     return converted
 
 def show_image():
+    st.sidebar.markdown('**Universidade Estadual do Maranhão**')
+    st.sidebar.markdown('**Nome**: Gizele Rodrigues da Silva')
+    st.sidebar.markdown('**Email**: gizele233@gmail.com')
+    st.sidebar.text('---------------------------------------------')
+
     st.sidebar.markdown('## Carregue uma imagem')
     img_file_buffer = st.sidebar.file_uploader('Selecione uma imagem', type=['jpg','jpeg','png'])
-
 
     if img_file_buffer is not None:
         im_original = Image.open(img_file_buffer)
